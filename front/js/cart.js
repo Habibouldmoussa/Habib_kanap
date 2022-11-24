@@ -27,7 +27,7 @@ let buttonOrder = document.getElementById("order");
 *@param {String} id
 *@return {promise}
 */
-async function getCard(id) {
+async function getCart(id) {
   return fetch(api_url + id)
     .then(res => { if (res.ok) { return res.json() } else { return res.status; } })
     .catch(err => { console.log(err) });
@@ -129,7 +129,7 @@ function modifQuantity(id, color, price, input) {
   let labelQuantity = input.previousElementSibling;
   let indexCart = productFounder(id, color)
   labelQuantity.textContent = "Qté : " + input.value;
-  updateTotaux(indexCart, input, price , false);
+  updateTotaux(indexCart, input, price, false);
   cart[indexCart].qty = eval(input.value);
   setCart();
 }
@@ -155,15 +155,15 @@ function delItem(id, color, price, article) {
 */
 function updateTotaux(id, elm, price, remouve) {
   //mise a jour lors de la suppression 
-  if (remouve == true) {    
-    quantityTotal -= eval(cart[id].qty);    
-    priceTotal -= eval(cart[id].qty) * eval(price);
+  if (remouve == true) {
+    quantityTotal -= +cart[id].qty;
+    priceTotal -= +cart[id].qty * +price;
   } else {
-    //Mise a jour lors de la modification des quantitées     
-    quantityTotal -= eval(cart[id].qty);
-    quantityTotal += eval(elm.value);        
-    priceTotal -= eval(cart[id].qty) * eval(price);    
-    priceTotal += eval(elm.value) * eval(price);
+    //Mise a jour lors de la modification des quantitées        
+    quantityTotal -= +cart[id].qty;
+    quantityTotal += +elm.value;
+    priceTotal -= +cart[id].qty * +price;
+    priceTotal += +elm.value * +price;
   }
   displayTotal();
 }
@@ -218,7 +218,7 @@ function verifForm() {
   if (regexVerif(formMail.value, "email") == false || formMail == "") {
     error = displayError(emailErrorMsg, formMail, "Email");
   }
-  if (regexVerif(formAdresse.value == "")) {
+  if (formAdresse.value == "") {
     error = displayError(addressErrorMsg, formAdresse, "Adresse");
   }
   if (regexVerif(formVille.value, "number") != false || formVille == "") {
@@ -226,26 +226,33 @@ function verifForm() {
   }
   return error
 }
+//Création de l'objet de confirmation du panier 
+function objetCart() {
+  return objetCart = {
+    contact: {
+      firstName: formNom.value,
+      lastName: formPrenom.value,
+      address: formAdresse.value,
+      city: formVille.value,
+      email: formMail.value
+    },
+    products: cart.map(product => product.ref)
+  }
+}
 /*Envoi la commande a l'API 
 *@return {promise}
 */
 async function sendOrder() {
+  let objetCart = objetCart()
   return fetch(api_url + "order", {
     method: "POST",
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      contact: {
-        firstName: formNom.value,
-        lastName: formPrenom.value,
-        address: formAdresse.value,
-        city: formVille.value,
-        email: formMail.value
-      },
-      products: cart.map(product => product.ref)
-    })
+    body: JSON.stringify(
+      objetCart
+    )
   })
     .then(res => { return res.json() })
     .catch(err => { console.log(err) });
@@ -266,13 +273,11 @@ function cartPastille(modif) {
   let cartPastille = document.createElement('span');
   cartPastille.style.background = "red";
   cartPastille.style.color = "white";
-  cartPastille.style.position = "relative";
+  cartPastille.style.margin = "0 5px";
   cartPastille.style.height = "20px";
   cartPastille.style.lineHeight = "20px";
   cartPastille.style.padding = "0 6px";
   cartPastille.style.borderRadius = "12px";
-  cartPastille.style.left = "-5px";
-  cartPastille.style.top = "10px";
   cartPastille.setAttribute("id", "cartPastille");
   let cartMenu = document.querySelector("nav ul a:nth-child(2)");
 
@@ -287,12 +292,25 @@ function cartPastille(modif) {
     cartPastille.remove();
   }
 }
+/*trie des items dans le panier
+*@param { object } items
+*
+*/
+function sortItemCart(items) {
+  items.sort(function (x, y) {
+    let a = x.ref.toUpperCase(),
+      b = y.ref.toUpperCase();
+    return a == b ? 0 : a > b ? 1 : -1;
+  });
+  return items
+}
 //Fonction principal 
 async function main() {
   let serveur = "";
   if (cart != null && cart.length != 0) {
-    for (listItemCart of cart) {
-      let itemAPI = await getCard(listItemCart.ref);
+    let sortCart = sortItemCart(cart)
+    for (listItemCart of sortCart) {
+      let itemAPI = await getCart(listItemCart.ref);
       if (itemAPI != undefined && itemAPI != "404") {
         displayCart(listItemCart, itemAPI);
         displayTotal();

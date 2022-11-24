@@ -19,14 +19,12 @@ async function getListeOfProducts() {
 function cartPastille(modif) {
     let cartPastille = document.createElement('span');
     cartPastille.style.background = "red";
-    cartPastille.style.color = "white";
-    cartPastille.style.position = "relative";
+    cartPastille.style.color = "white";    
     cartPastille.style.height = "20px";
     cartPastille.style.lineHeight = "20px";
     cartPastille.style.padding = "0 6px";
     cartPastille.style.borderRadius = "12px";
-    cartPastille.style.left = "-5px";
-    cartPastille.style.top = "10px";
+    cartPastille.style.margin = "0 5px";
     cartPastille.setAttribute("id", "cartPastille");
     let cartMenu = document.querySelector("nav ul a:nth-child(2)");
     if (cart != null && cart.length != 0 && !modif) {

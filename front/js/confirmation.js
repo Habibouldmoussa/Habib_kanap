@@ -6,7 +6,7 @@ function main() {
     if (id != null) {
     orderId.textContent = id;
     } else {
-        window.location.assign("./index.html")
+        window.location.assign("./index.html");
     }
 
 }

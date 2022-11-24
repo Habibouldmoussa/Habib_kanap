@@ -48,13 +48,11 @@ function cartPastille(modif) {
     let cartPastille = document.createElement('span');
     cartPastille.style.background = "red";
     cartPastille.style.color = "white";
-    cartPastille.style.position = "relative";
+    cartPastille.style.margin = "0 5px";
     cartPastille.style.height = "20px";
     cartPastille.style.lineHeight = "20px";
     cartPastille.style.padding = "0 6px";
     cartPastille.style.borderRadius = "12px";
-    cartPastille.style.left = "-5px";
-    cartPastille.style.top = "10px";
     cartPastille.setAttribute("id", "cartPastille");
     let cartMenu = document.querySelector("nav ul a:nth-child(2)");
     if (cart != null && !modif) {
@@ -71,6 +69,14 @@ function cartPastille(modif) {
 function productFounder() {
     return productFound = cart.findIndex(p => p.ref == id && p.color == colors.value);
 }
+function displayAlert(error) {
+    let alert = document.createElement('div')
+    alert.style.color = "pink" 
+    alert.style.padding = "10px" 
+    alert.textContent  = error;
+    addToCart.closest(".item__content").append(alert)
+
+}
 //Ajout du produit au panier 
 function addCart() {
     //Si tout les champs ne sont rempli corrproductFounderectement on ajoute pas le produit au panier 
@@ -85,6 +91,8 @@ function addCart() {
             let itemInCart = productFounder();
             if (itemInCart != -1) {
                 cart[itemInCart].qty = eval(cart[itemInCart].qty + parseInt(quantity.value));
+                displayAlert("Attention le produit ajouté existe déjà par conséquant sa quantité augmentera")
+            
             } else {
                 //si le produit n'existe pas dans le panier on le push autant que objet 
                 let cartItem = objectCart();
