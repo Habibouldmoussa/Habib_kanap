@@ -23,6 +23,7 @@ let cityErrorMsg = document.getElementById("cityErrorMsg");
 let emailErrorMsg = document.getElementById("emailErrorMsg");
 let buttonOrder = document.getElementById("order");
 //---------------------------------------------------//
+let objetCart = {}
 /*Récuperation des produits dans le panier 
 *@param {String} id
 *@return {promise}
@@ -227,7 +228,7 @@ function verifForm() {
   return error
 }
 //Création de l'objet de confirmation du panier 
-function objetCart() {
+function objetConfirmationCart() {
   return objetCart = {
     contact: {
       firstName: formNom.value,
@@ -243,7 +244,7 @@ function objetCart() {
 *@return {promise}
 */
 async function sendOrder() {
-  let objetCart = objetCart()
+  objetConfirmationCart() 
   return fetch(api_url + "order", {
     method: "POST",
     headers: {
