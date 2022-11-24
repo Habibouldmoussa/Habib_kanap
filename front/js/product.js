@@ -73,14 +73,20 @@ function productFounder() {
 *@param {String} error
 */
 function displayAlert(error) {
-    let alert = document.createElement('div')
-    alert.style.color = "pink" 
-    alert.style.padding = "10px" 
-    alert.textContent  = error;
-    addToCart.closest(".item__content").append(alert)
+    let alerte = document.getElementById("alert_addcart")
+    if (!!alerte) {
+        alerte.remove();
+    } 
+    let alert = document.createElement('div');
+    alert.style.color = "pink";
+    alert.style.padding = "10px";
+    alert.setAttribute("id", "alert_addcart")
+    alert.textContent = error;
+    addToCart.closest(".item__content").append(alert);    
 }
 //Ajout du produit au panier 
 function addCart() {
+
     //Si tout les champs ne sont rempli corrproductFounderectement on ajoute pas le produit au panier 
     if (colors.value != "" && quantity.value > 0) {
         //Si le panier est vide on ajoute l'element en tant que tableau pour faire fonctionner la fonciton find 
@@ -88,18 +94,20 @@ function addCart() {
             let cartItem = objectCart();
             cart = [cartItem];
             cartPastille(false);
+            displayAlert("")
         } else {
             //Si le panier n'est pas vide on modifie seulement les quantitées 
             let itemInCart = productFounder();
             if (itemInCart != -1) {
                 cart[itemInCart].qty = eval(cart[itemInCart].qty + parseInt(quantity.value));
                 displayAlert("Attention le produit ajouté existe déjà par conséquant sa quantité augmentera")
-            
+
             } else {
                 //si le produit n'existe pas dans le panier on le push autant que objet 
                 let cartItem = objectCart();
                 cart.push(cartItem);
                 cartPastille(true)
+                displayAlert("")
             }
         }
         changeButtonAddCart("Produit ajouté", "green");

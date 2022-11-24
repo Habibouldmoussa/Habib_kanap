@@ -267,7 +267,6 @@ async function order() {
 }
 /*Affichage de la pastille du panier
 *@param { boolean } modif
-*
 */
 function cartPastille(modif) {
   let cartPastille = document.createElement('span');
