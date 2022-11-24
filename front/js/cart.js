@@ -85,8 +85,8 @@ function displayCart(listItemCart, itemAPI) {
   deleteItem.textContent = "Supprimer"
   deleteItem.addEventListener("click", (e) => { delItem(listItemCart.ref, listItemCart.color, itemAPI.price, article) });
   //Calcule des totaux pour chaque produits affiché 
-  priceTotal += eval(itemAPI.price) * eval(listItemCart.qty)
-  quantityTotal += eval(listItemCart.qty);
+  priceTotal += +itemAPI.price * +listItemCart.qty;
+  quantityTotal += +listItemCart.qty;
   //Construction du DOM
   deleteDiv.append(deleteItem);
   quantityDiv.append(quantity, inputQty);
@@ -131,7 +131,7 @@ function modifQuantity(id, color, price, input) {
   let indexCart = productFounder(id, color)
   labelQuantity.textContent = "Qté : " + input.value;
   updateTotaux(indexCart, input, price, false);
-  cart[indexCart].qty = eval(input.value);
+  cart[indexCart].qty = +input.value;
   setCart();
 }
 /*suppression d"un élement du panier 

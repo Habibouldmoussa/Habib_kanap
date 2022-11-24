@@ -99,7 +99,7 @@ function addCart() {
             //Si le panier n'est pas vide on modifie seulement les quantitées 
             let itemInCart = productFounder();
             if (itemInCart != -1) {
-                cart[itemInCart].qty = eval(cart[itemInCart].qty + parseInt(quantity.value));
+                cart[itemInCart].qty = +cart[itemInCart].qty + parseInt(quantity.value);
                 displayAlert("Attention le produit ajouté existe déjà par conséquant sa quantité augmentera")
 
             } else {
