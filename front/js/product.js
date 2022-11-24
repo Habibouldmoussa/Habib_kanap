@@ -69,13 +69,15 @@ function cartPastille(modif) {
 function productFounder() {
     return productFound = cart.findIndex(p => p.ref == id && p.color == colors.value);
 }
+/*Affiche les commentaires lors des ajouts dans le panier
+*@param {String} error
+*/
 function displayAlert(error) {
     let alert = document.createElement('div')
     alert.style.color = "pink" 
     alert.style.padding = "10px" 
     alert.textContent  = error;
     addToCart.closest(".item__content").append(alert)
-
 }
 //Ajout du produit au panier 
 function addCart() {
