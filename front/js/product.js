@@ -88,7 +88,9 @@ function displayAlert(error) {
 function addCart() {
 
     //Si tout les champs ne sont rempli corrproductFounderectement on ajoute pas le produit au panier 
-    if (colors.value != "" && quantity.value > 0) {
+    if (colors.value != "" && quantity.value > 0 && quantity.value <= 100 ) {
+        let blocSettingProduct = document.querySelector(".item__content__settings");
+        blocSettingProduct.style.backgroundColor = "";
         //Si le panier est vide on ajoute l'element en tant que tableau pour faire fonctionner la fonciton find 
         if (cart == null) {
             let cartItem = objectCart();
@@ -99,8 +101,12 @@ function addCart() {
             //Si le panier n'est pas vide on modifie seulement les quantitées 
             let itemInCart = productFounder();
             if (itemInCart != -1) {
-                cart[itemInCart].qty = +cart[itemInCart].qty + parseInt(quantity.value);
-                displayAlert("Attention le produit ajouté existe déjà par conséquant sa quantité augmentera")
+                if (+cart[itemInCart].qty + parseInt(quantity.value) <= 100 ) { 
+                    cart[itemInCart].qty = +cart[itemInCart].qty + parseInt(quantity.value);                
+                    displayAlert("Attention le produit ajouté existe déjà par conséquant sa quantité augmentera")
+                }else {
+                    displayAlert("Vous ne pouvez pas commander plus de cent unité de ce produit")
+                }
 
             } else {
                 //si le produit n'existe pas dans le panier on le push autant que objet 

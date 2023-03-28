@@ -129,10 +129,21 @@ function setCart() {
 function modifQuantity(id, color, price, input) {
   let labelQuantity = input.previousElementSibling;
   let indexCart = productFounder(id, color)
-  labelQuantity.textContent = "Qté : " + input.value;
-  updateTotaux(indexCart, input, price, false);
-  cart[indexCart].qty = +input.value;
-  setCart();
+  labelQuantity.style.backgroundColor = "";
+  if (input.value != 0 && input.value > 0 && input.value <= 100) {
+    labelQuantity.textContent = "Qté : " + input.value;
+    updateTotaux(indexCart, input, price, false);
+    cart[indexCart].qty = +input.value;
+    setCart();
+  } else {
+    displayErrorModif(labelQuantity)
+  }
+}
+/* Affichage des erreurs de la modification du panier 
+*@param {HTMLElement} labelQuantity
+*/
+function displayErrorModif(labelQuantity) { 
+  labelQuantity.style.backgroundColor = "red";
 }
 /*suppression d"un élement du panier 
 *@param {String} id
